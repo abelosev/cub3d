@@ -45,6 +45,7 @@ OBJS		= $(SRCS:.c=.o)
 
 LIBFT		= $(LIBFT_DIR)/libft.a
 MLX			= $(MLX_DIR)/libmlx_Linux.a
+MLX_MAKEFILE	= $(MLX_DIR)/Makefile
 
 LIBS		= -L$(MLX_DIR) \
 			  -lmlx_Linux \
@@ -64,10 +65,11 @@ $(NAME): $(LIBFT) $(MLX) $(OBJS)
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(MLX_DIR):
+$(MLX_MAKEFILE):
+	rm -rf $(MLX_DIR)
 	git clone --branch $(MLX_BRANCH) --single-branch $(MLX_REPO) $(MLX_DIR)
 
-$(MLX): $(MLX_DIR)
+$(MLX): $(MLX_MAKEFILE)
 	$(MAKE) -C $(MLX_DIR)
 
 bonus: all
@@ -75,7 +77,7 @@ bonus: all
 clean:
 	rm -f $(OBJS)
 	$(MAKE) -C $(LIBFT_DIR) clean
-	@if [ -d "$(MLX_DIR)" ]; then $(MAKE) -C $(MLX_DIR) clean; fi
+	@if [ -f "$(MLX_MAKEFILE)" ]; then $(MAKE) -C $(MLX_DIR) clean; fi
 
 fclean: clean
 	rm -f $(NAME)
