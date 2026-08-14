@@ -52,9 +52,13 @@ static void	init_image(t_game *game)
 {
 	game->screen.img = mlx_new_image(game->mlx, WIN_WIDTH, WIN_HEIGHT);
 	if (!game->screen.img)
-		game_error(game, "mlx: failed to create screen image");
+		parse_error(&game->cub, "mlx: failed to create screen image");
 	game->screen.addr = mlx_get_data_addr(game->screen.img,
-			&game->screen.bpp, &game->screen.line_len, &game->screen.endian);
+			&game->screen.bpp,
+			&game->screen.line_len,
+			&game->screen.endian);
+	game->screen.width = WIN_WIDTH;
+	game->screen.height = WIN_HEIGHT;
 }
 
 static void	init_mlx(t_game *game)

@@ -19,7 +19,7 @@ CFLAGS = -Wall -Werror -Wextra
 INC = -I.
 
 SRC = ft_atoi.c \
-      	ft_bzero.c \
+	ft_bzero.c \
 	ft_calloc.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
@@ -51,40 +51,39 @@ SRC = ft_atoi.c \
 	ft_strnstr.c \
 	ft_strrchr.c \
 	ft_strtrim.c \
-	ft_substr.c
+	ft_substr.c \
+	ft_lstadd_back.c \
+	ft_lstnew.c \
+	ft_lstsize.c
 
-SRC_BONUS = ft_lstadd_back.c \
-	    	ft_lstadd_front.c \
-		ft_lstclear.c \
-		ft_lstdelone.c \
-		ft_lstiter.c \
-		ft_lstlast.c \
-		ft_lstmap.c \
-		ft_lstnew.c \
-		ft_lstsize.c
+SRC_BONUS = ft_lstadd_front.c \
+	ft_lstclear.c \
+	ft_lstdelone.c \
+	ft_lstiter.c \
+	ft_lstlast.c \
+	ft_lstmap.c
 
 OBJ = $(SRC:.c=.o)
 
 OBJ_BONUS = $(SRC_BONUS:.c=.o)
 
-all : $(NAME)
+all: $(NAME)
 
-bonus : fclean $(OBJ) $(OBJ_BONUS)
-	ar rcs $(NAME) $(OBJ) $(OBJ_BONUS)
-
-$(NAME) : $(OBJ)
+$(NAME): $(OBJ)
 	ar rcs $(NAME) $(OBJ)
 
-%.o : %.c
+bonus: $(OBJ) $(OBJ_BONUS)
+	ar rcs $(NAME) $(OBJ) $(OBJ_BONUS)
+
+%.o: %.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-clean :
+clean:
 	rm -f $(OBJ) $(OBJ_BONUS)
 
-fclean : clean
+fclean: clean
 	rm -f $(NAME)
 
-re : fclean all
+re: fclean all
 
-
-.PHONY : all clean fclean re bonus
+.PHONY: all clean fclean re bonus
