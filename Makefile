@@ -7,7 +7,7 @@ INC_DIR		= inc
 LIBFT_DIR	= libft
 MLX_DIR		= minilibx-linux
 
-INCLUDES	= -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+INCLUDES	= -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR) -Iminilibx-linux -Ilibft
 
 # parsing.h уже содержит всё, что раньше было в get_next_line.h -
 # отдельного заголовка для gnl больше нет (см. merge parsing.h).
