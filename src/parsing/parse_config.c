@@ -1,0 +1,161 @@
+#include "parsing.h"
+
+static int	match_identifier(char *line, char *id)
+{
+	size_t	len;
+
+	len = ft_strlen(id);
+	if (ft_strncmp(line, id, len) != 0)
+		return (0);
+	return (line[len] == '\0' || is_space_char(line[len]));
+}
+
+static char	*build_msg(char *p1, char *p2, char *p3)
+{
+	char	*tmp;
+	char	*res;
+
+	tmp = ft_strjoin(p1, p2);
+	if (!tmp)
+		return (p1);
+	res = ft_strjoin(tmp, p3);
+	free(tmp);
+	if (!res)
+		return (p1);
+	return (res);
+}
+
+static void	cut_trailing_args(t_cub *cub, char *path, char *name)
+{
+	char	*end;
+
+	end = path;
+	while (*end && !is_space_char(*end))
+		end++;
+	if (*end)
+	{
+		if (*skip_spaces(end))
+			parse_error(cub, build_msg("extra arguments after ",
+					name, " texture path"));
+		*end = '\0';
+	}
+}
+
+static void	set_texture(t_cub *cub, char **field, char *rest, char *name)
+{
+	char	*path;
+	int		fd;
+
+	if (*field)
+		parse_error(cub, build_msg("duplicate ", name, " texture identifier"));
+	path = skip_spaces(rest);
+	if (!*path)
+		parse_error(cub, build_msg("missing path for ", name, " texture"));
+	cut_trailing_args(cub, path, name);
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		parse_error(cub, build_msg("cannot open ", name, " texture file"));
+	close(fd);
+	*field = ft_strdup(path);
+	if (!*field)
+		parse_error(cub, "malloc failure");
+}
+
+static int	parse_rgb_token(char *token, int *out)
+{
+	char	*start;
+	char	*end;
+
+	start = skip_spaces(token);
+	end = start + ft_strlen(start);
+	while (end > start && is_space_char(end[-1]))
+		end--;
+	*end = '\0';
+	return (parse_int_strict(start, out));
+}
+
+static int	extract_rgb(char **tokens, int *values)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i] && i < 4)
+		i++;
+	if (i != 3)
+		return (0);
+	if (!parse_rgb_token(tokens[0], &values[0]))
+		return (0);
+	if (!parse_rgb_token(tokens[1], &values[1]))
+		return (0);
+	if (!parse_rgb_token(tokens[2], &values[2]))
+		return (0);
+	return (1);
+}
+
+static void	free_tokens(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+		free(tokens[i++]);
+	free(tokens);
+}
+
+static void	parse_color(t_cub *cub, t_color *color, char *rest, char *name)
+{
+	char	**tokens;
+	int		values[3];
+
+	if (color->is_set)
+		parse_error(cub, build_msg("duplicate ", name, " color identifier"));
+	tokens = ft_split(skip_spaces(rest), ',');
+	if (!tokens)
+		parse_error(cub, "malloc failure while parsing a color");
+	if (!extract_rgb(tokens, values))
+	{
+		free_tokens(tokens);
+		parse_error(cub, build_msg(name,
+				" color must be formatted as R,G,B with values 0-255", ""));
+	}
+	free_tokens(tokens);
+	color->r = values[0];
+	color->g = values[1];
+	color->b = values[2];
+	color->is_set = 1;
+}
+
+int	try_parse_config(t_cub *cub, char *line)
+{
+	if (match_identifier(line, "NO"))
+		set_texture(cub, &cub->no_path, line + 2, "north");
+	else if (match_identifier(line, "SO"))
+		set_texture(cub, &cub->so_path, line + 2, "south");
+	else if (match_identifier(line, "WE"))
+		set_texture(cub, &cub->we_path, line + 2, "west");
+	else if (match_identifier(line, "EA"))
+		set_texture(cub, &cub->ea_path, line + 2, "east");
+	else if (match_identifier(line, "F"))
+		parse_color(cub, &cub->floor, line + 1, "floor");
+	else if (match_identifier(line, "C"))
+		parse_color(cub, &cub->ceiling, line + 1, "ceiling");
+	else
+		return (0);
+	return (1);
+}
+
+void	check_config_complete(t_cub *cub)
+{
+	if (!cub->no_path)
+		parse_error(cub, "missing north texture (NO)");
+	if (!cub->so_path)
+		parse_error(cub, "missing south texture (SO)");
+	if (!cub->we_path)
+		parse_error(cub, "missing west texture (WE)");
+	if (!cub->ea_path)
+		parse_error(cub, "missing east texture (EA)");
+	if (!cub->floor.is_set)
+		parse_error(cub, "missing floor color (F)");
+	if (!cub->ceiling.is_set)
+		parse_error(cub, "missing ceiling color (C)");
+}

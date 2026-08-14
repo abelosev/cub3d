@@ -1,0 +1,13 @@
+NO ./xpm/SIMPLE1.xpm
+SO ./xpm/SIMPLE2.xpm
+WE ./xpm/SIMPLE3.xpm
+EA ./xpm/SIMPLE4.xpm
+
+F 220,100,0
+C 225,30,0
+
+
+1111
+10S1
+1001
+1111
