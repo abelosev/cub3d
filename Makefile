@@ -1,11 +1,14 @@
 NAME		= cub3D
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -std=gnu17
 
 INC_DIR		= inc
 LIBFT_DIR	= libft
 MLX_DIR		= minilibx-linux
+
+MLX_REPO	= https://github.com/42paris/minilibx-linux.git
+MLX_BRANCH	= fedora
 
 INCLUDES	= -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
@@ -61,7 +64,10 @@ $(NAME): $(LIBFT) $(MLX) $(OBJS)
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(MLX):
+$(MLX_DIR):
+	git clone --branch $(MLX_BRANCH) --single-branch $(MLX_REPO) $(MLX_DIR)
+
+$(MLX): $(MLX_DIR)
 	$(MAKE) -C $(MLX_DIR)
 
 bonus: all
@@ -69,13 +75,12 @@ bonus: all
 clean:
 	rm -f $(OBJS)
 	$(MAKE) -C $(LIBFT_DIR) clean
-	$(MAKE) -C $(MLX_DIR) clean
+	@if [ -d "$(MLX_DIR)" ]; then $(MAKE) -C $(MLX_DIR) clean; fi
 
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
-	rm -f $(MLX_DIR)/libmlx_Linux.a
-	rm -f $(MLX_DIR)/libmlx.a
+	rm -rf $(MLX_DIR)
 
 re: fclean all
 
