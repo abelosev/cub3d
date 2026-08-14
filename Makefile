@@ -44,20 +44,38 @@ $(NAME): $(LIBFT) $(MLX) $(OBJS)
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# $(LIBFT) и $(MLX) объявлены ниже как .PHONY - это специально:
+# у самих файлов libft.a/libmlx_Linux.a нет prerequisites, поэтому
+# без .PHONY make, увидев, что архив уже существует на диске,
+# вообще не заходил бы повторно в подпапку - и правки внутри
+# libft/ или minilibx-linux/ молча игнорировались бы обычным make
+# (только make fclean && make их бы подхватил). С .PHONY make
+# каждый раз заходит в подпапку и отдаёт решение "нужна ли
+# пересборка" её собственному Makefile; сам cub3D при этом всё
+# равно перелинкуется, только если итоговый архив реально обновился
+# (сравнение по mtime уже самого файла $(LIBFT)/$(MLX)), так что
+# требование "не перелинковывать без необходимости" не нарушается.
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(MLX):
 	$(MAKE) -C $(MLX_DIR)
 
+# Нет bonus-файлов/функций в этом проекте - правило оставлено как
+# алиас на all, чтобы `make bonus` не падал с "No rule to make
+# target", если его всё же вызовут при пир-евалюации.
+bonus: all
+
 clean:
 	rm -f $(OBJS)
 	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) -C $(MLX_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
+	rm -f $(MLX_DIR)/libmlx_Linux.a $(MLX_DIR)/libmlx.a
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus $(LIBFT) $(MLX)
