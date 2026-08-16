@@ -56,6 +56,7 @@ int	fill_map(t_map *map, char **lines, int start, int height)
 	while (y < height)
 	{
 		if (!fill_line(map, lines[start + y], y))
+		// free + error malloc
 			return (0);
 		y++;
 	}
