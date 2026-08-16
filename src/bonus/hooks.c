@@ -88,7 +88,7 @@ static void	handle_movement(int k, t_cub3d_env *env)
 			(int)(env->map->position.x + dx + buf_x)) == 0)
 		env->map->position.x += dx;
 	if (get_cell(env->map, (int)(env->map->position.y + dy + buf_y),
-			(int)env->map->position.x) == 0)
+		(int)env->map->position.x) == 0)
 		env->map->position.y += dy;
 }
 
