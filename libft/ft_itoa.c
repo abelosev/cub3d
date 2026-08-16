@@ -3,61 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:00:57 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:01:05 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/03 21:44:42 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/12 16:17:05 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	count_len(long nb)
+static int	abs_value(int n)
 {
-	int	len;
-
-	len = 1;
-	if (nb < 0)
-	{
-		len++;
-		nb *= -1;
-	}
-	while (nb >= 10)
-	{
-		nb /= 10;
-		len++;
-	}
-	return (len);
+	if (n < 0)
+		return (-n);
+	return (n);
 }
 
-void	fill_res(long nb, char *res, int *i)
+static int	count_necessary_chars(int n)
 {
-	if (nb >= 10)
+	int	count;
+
+	if (n == 0)
+		return (1);
+	count = 0;
+	if (n < 0)
+		count++;
+	while (n != 0)
 	{
-		fill_res(nb / 10, res, i);
+		count++;
+		n /= 10;
 	}
-	res[*i] = (nb % 10) + '0';
-	(*i)++;
+	return (count);
 }
 
 char	*ft_itoa(int n)
 {
-	long	nb;
-	char	*res;
-	int		i;
+	unsigned int	necessary_chars;
+	char			*result;
 
-	nb = (long)n;
-	i = 0;
-	res = (char *)malloc(sizeof(char) * (count_len(nb) + 1));
-	if (!res)
+	necessary_chars = count_necessary_chars(n);
+	result = malloc(sizeof(char) * (necessary_chars + 1));
+	if (!result)
 		return (NULL);
-	if (nb < 0)
+	if (n == 0)
+		result[0] = '0';
+	if (n < 0)
+		result[0] = '-';
+	result[necessary_chars] = '\0';
+	while (n != 0)
 	{
-		res[i] = '-';
-		i++;
-		nb *= -1;
+		result[--necessary_chars] = '0' + abs_value(n % 10);
+		n /= 10;
 	}
-	fill_res(nb, res, &i);
-	res[i] = '\0';
-	return (res);
+	return (result);
 }

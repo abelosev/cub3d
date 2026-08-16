@@ -3,38 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:18:03 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:39:01 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/04 13:29:26 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/12 17:57:07 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*res;
-	size_t	len_res;
-	size_t	len_s;
+	char	*result;
+	size_t	strlen;
 
-	if (!s)
+	strlen = ft_strlen(s);
+	if (start + len > strlen)
+		len = strlen - start;
+	if (start > strlen)
+		len = 0;
+	result = malloc(len + 1);
+	if (!result)
 		return (NULL);
-	len_s = ft_strlen(s);
-	if (start >= len_s || len == 0)
+	result[len] = '\0';
+	while (len > 0 && s[start + len - 1])
 	{
-		res = (char *)malloc(1);
-		if (!res)
-			return (NULL);
-		res[0] = '\0';
-		return (res);
+		result[len - 1] = s[start + len - 1];
+		len--;
 	}
-	len_res = len_s - start;
-	if (len_res > len)
-		len_res = len;
-	res = (char *)malloc(sizeof(char) * (len_res + 1));
-	if (!res)
-		return (NULL);	
-	ft_strlcpy(res, s + start, len_res + 1);
-	return (res);
+	return (result);
 }
+
+/* int main()
+{
+	char *result = ft_substr("0123456789", 5, 3);
+	printf("%s\n", result);
+} */

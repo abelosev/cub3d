@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:00:09 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:00:10 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/03 21:44:39 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/07 10:03:50 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int	ft_isprint(int c)
 {
-	return (c >= SP && c <= LAST_PRINT);
+	return (c >= ' ' && c <= '~');
 }

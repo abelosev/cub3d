@@ -3,27 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:15:06 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:15:09 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/03 21:45:04 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/17 09:52:01 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strrchr(const char *string, int searched)
 {
-	ssize_t	i;
+	int	strlen;
 
-	if (!s)
+	strlen = ft_strlen(string);
+	if (!(char) searched)
+		return ((char *)(string + strlen));
+	if (!*string)
 		return (NULL);
-	i = ft_strlen(s);
-	while (i >= 0)
+	while (strlen-- >= 0)
 	{
-		if ((unsigned char)s[i] == (unsigned char)c)
-			return ((char *)s + i);
-		i--;
+		if (string[strlen] == (unsigned char)searched)
+			return ((char *)(string + strlen));
 	}
 	return (NULL);
 }

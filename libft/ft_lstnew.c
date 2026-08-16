@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:02:55 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:02:57 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/05 14:47:41 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/11 12:23:29 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,18 @@ t_list	*ft_lstnew(void *content)
 {
 	t_list	*new;
 
-	new = (t_list *)malloc(sizeof(t_list));
+	new = malloc(sizeof(t_list));
 	if (!new)
 		return (NULL);
 	new->content = content;
 	new->next = NULL;
 	return (new);
 }
+
+/* #include <stdio.h>
+int	main(void)
+{
+	int var = 255;
+	t_list  *node = ft_lstnew(&var);
+	printf("%x\n", *(unsigned int*) (node->content));
+} */

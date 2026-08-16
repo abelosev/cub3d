@@ -1,0 +1,11 @@
+NO ./textures/Bricks_64.xpm
+SO ./textures/Bricks_64.xpm
+WE ./textures/Bricks_64.xpm
+EA ./textures/Bricks_64.xpm
+F 100,100,100
+C 200,200,200
+
+111111
+1N0001
+110 11
+111111

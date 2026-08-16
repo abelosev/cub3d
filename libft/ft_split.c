@@ -3,95 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:10:19 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:10:34 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/04 18:17:58 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/12 18:08:17 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	word_count(char const *s, char c)
+static unsigned int	count_words(char const *s, char c)
 {
-	int	nb;
-	int	i;
+	unsigned int	words;
+	unsigned int	in_word;
 
-	nb = 0;
-	i = 0;
-	while (s[i])
+	words = 0;
+	in_word = 0;
+	while (*s)
 	{
-		while (s[i] == c)
-			i++;
-		if (s[i] && s[i] != c)
-			nb++;
-		while (s[i] && s[i] != c)
-			i++;
+		if (!in_word && *s != c)
+		{
+			in_word = 1;
+			words++;
+		}
+		if (in_word && *s == c)
+			in_word = 0;
+		s++;
 	}
-	return (nb);
+	return (words);
 }
 
-static char	*word_fill(const char **s, char c)
+static void	*free_all(char **split_out, unsigned int word_count)
 {
-	char	*word;
-	int		w_len;
-	int		i;
+	unsigned int	counter;
 
-	w_len = 0;
-	while ((*s)[w_len] && (*s)[w_len] != c)
-		w_len++;
-	word = (char *)malloc(sizeof(char) * (w_len + 1));
-	if (!word)
-		return (NULL);
-	i = 0;
-	while (i < w_len)
+	counter = 0;
+	while (counter < word_count + 1)
 	{
-		word[i] = **s;
-		(*s)++;
-		i++;
+		if (split_out[counter] != NULL)
+			free(split_out[counter]);
+		counter++;
 	}
-	word[i] = '\0';
-	return (word);
-}
-
-static void	free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
+	free(split_out);
+	return (NULL);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**res;
-	int		nb;
-	int		i;
+	char			**result;
+	unsigned int	w_c;
+	unsigned int	words;
+	unsigned int	i;
 
-	if (!s)
+	words = count_words(s, c);
+	result = malloc(sizeof(char *) * (words + 1));
+	if (!result)
 		return (NULL);
-	nb = word_count(s, c);
-	res = (char **)malloc(sizeof(char *) * (nb + 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (*s && i < nb)
+	w_c = 0;
+	while (*s)
 	{
-		while (*s == c)
+		i = 0;
+		while (*s && *s == c)
 			s++;
-		res[i] = word_fill(&s, c);
-		if (!res[i])
-		{
-			free_tab(res);
-			return (NULL);
-		}
-		i++;
+		while (s[i] && s[i] != c)
+			i++;
+		if (s[i] != *s)
+			result[w_c++] = ft_substr(s, 0, i);
+		if (w_c != 0 && result[w_c - 1] == NULL)
+			return (free_all(result, words));
+		s += i;
 	}
-	res[i] = NULL;
-	return (res);
+	result[w_c] = NULL;
+	return (result);
 }
+
+/* #include <stdio.h>
+int	main(int ac, char **av)
+{
+	char **res = ft_split(av[1], av[2][0]);
+	for (int i = 0; i < 5; i++)
+		printf("%s\n", res[i]);
+} */

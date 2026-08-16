@@ -3,105 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/01 20:35:03 by anbelose          #+#    #+#             */
-/*   Updated: 2025/08/01 20:45:52 by anbelose         ###   ########.fr       */
+/*   Created: 2026/01/17 11:57:25 by vfekete           #+#    #+#             */
+/*   Updated: 2026/07/06 14:31:06 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "get_next_line.h"
 
-char	*get_line1(char *remain)
+void	rd_until_nl_or_eof(int fd, t_rd *rd)
 {
-	size_t	i;
-	char	*line;
+	int	bytes_read;
 
-	i = 0;
-	if (!remain || !*remain)
-		return (NULL);
-	if (!ft_strchr(remain, '\n'))
-	{
-		line = ft_strndup(remain, ft_strlen(remain));
-		if (!line)
-			return (NULL);
-		return (line);
-	}
-	while (remain[i] != '\n')
-		i++;
-	line = ft_strndup(remain, i + 1);
-	return (line);
-}
-
-void	get_new_remain(char **remain, char *line)
-{
-	char	*new_remain;
-	int		len;
-
-	if (!*remain || !**remain)
+	if (fd < 0)
 		return ;
-	if (!ft_strchr((*remain), '\n'))
-		return (safe_free(remain));
-	len = ft_strlen(line);
-	new_remain = ft_strndup(*remain + len, ft_strlen(*remain) - len);
-	if (!new_remain)
-		return (safe_free(remain));
-	free(*remain);
-	*remain = new_remain;
-}
-
-ssize_t	reading(int fd, char **remain)
-{
-	ssize_t	read_res;
-	char	*buf;
-	char	*tmp;
-
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buf)
-		return (-1);
-	read_res = read(fd, buf, BUFFER_SIZE);
-	if (read_res < 0)
-		return (free(buf), safe_free(remain), read_res);
-	while (read_res > 0)
+	rd->start_index = rd->rd_index;
+	while (!ft_strchr(rd->buf + rd->start_index, '\n'))
 	{
-		buf[read_res] = '\0';
-		tmp = ft_strjoin(*remain, buf);
-		if (!tmp)
-			return (free(buf), safe_free(remain), -1);
-		free(*remain);
-		*remain = tmp;
-		if (ft_strchr(*remain, '\n'))
+		while (rd->size + BUFFER_SIZE >= rd->capacity)
+			resize_rd_buf(rd);
+		if (!rd)
+			return ;
+		bytes_read = read(fd, rd->buf + rd->size, BUFFER_SIZE);
+		if (bytes_read > 0)
+			rd->size += bytes_read;
+		if (bytes_read < BUFFER_SIZE)
 			break ;
-		read_res = read(fd, buf, BUFFER_SIZE);
 	}
-	return (free(buf), read_res);
+	if (ft_strchr(rd->buf + rd->start_index, '\n'))
+		rd->nl_index = ft_strchr(rd->buf + rd->start_index, '\n') - rd->buf;
+	else
+		rd->nl_index = rd->size;
+	rd->rd_index = rd->nl_index + 1;
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*remain;
-	char		*line;
-	ssize_t		read_res;
+	static t_rd	*rd = (void *)1;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
+	if (rd == (void *)1)
+		rd = init_rd();
+	if (!rd)
 		return (NULL);
-	if (!remain)
+	rd_until_nl_or_eof(fd, rd);
+	if (rd->start_index >= rd->size || fd == -1)
 	{
-		remain = malloc(1);
-		if (!remain)
-			return (NULL);
-		remain[0] = '\0';
+		free(rd->buf);
+		rd->buf = NULL;
+		free(rd);
+		rd = NULL;
+		return (NULL);
 	}
-	read_res = 1;
-	if (!ft_strchr(remain, '\n'))
-	{
-		read_res = reading(fd, &remain);
-		if (read_res < 0)
-			return (safe_free(&remain), NULL);
-	}
-	line = get_line1(remain);
-	if (!line && remain)
-		return (safe_free(&remain), NULL);
-	get_new_remain(&remain, line);
-	return (line);
+	return (ft_substr(rd->buf, rd->start_index, rd->rd_index
+			- rd->start_index));
 }

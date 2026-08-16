@@ -3,31 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:09:48 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:11:05 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/05 13:59:17 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/11 12:33:38 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+static void	recursive_putnbr_fd(long n, int fd)
+{
+	if (n < 10)
+		ft_putchar_fd('0' + n, fd);
+	else
+	{
+		recursive_putnbr_fd(n / 10, fd);
+		ft_putchar_fd('0' + n % 10, fd);
+	}
+}
+
 void	ft_putnbr_fd(int n, int fd)
 {
-	long	nb;
-	char	c;
+	long	num;
 
-	nb = (long)n;
-	if (nb < 0)
+	num = (long)n;
+	if (num < 0)
 	{
 		ft_putchar_fd('-', fd);
-		nb *= -1;
+		recursive_putnbr_fd(-num, fd);
 	}
-	if (nb >= 10)
-	{
-		ft_putnbr_fd(nb / 10, fd);
-		nb %= 10;
-	}
-	c = nb + '0';
-	ft_putchar_fd(c, fd);
+	else
+		recursive_putnbr_fd(num, fd);
 }
+
+/*#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+int main()
+{
+	int fd = open("./test.txt", O_WRONLY);
+	ft_putnbr_fd(2147483647, fd);
+	close(fd);
+} */

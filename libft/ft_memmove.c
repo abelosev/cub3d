@@ -3,44 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:19:06 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:19:13 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/04 18:11:52 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/15 11:24:37 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_memmove(void *dest, const void *src, size_t size)
 {
-	size_t			i;
-	unsigned char	*d;
-	unsigned char	*s;
+	int		i;
 
-	if (!dest || !n)
+	if (!src && !dest)
 		return (NULL);
-	if (dest < src)
-		ft_memcpy(dest, src, n);
+	if (!size)
+		return (dest);
+	if (src < dest)
+	{
+		i = size;
+		while (--i >= 0)
+			*(char *)(dest + i) = *(char *)(src + i);
+	}
 	else
 	{
-		d = (unsigned char *)dest;
-		s = (unsigned char *)src;
-		i = n - 1;
-		while (i > 0)
+		i = 0;
+		while (i < (int) size)
 		{
-			d[i] = s[i];
-			i--;
+			*(char *)(dest + i) = *(char *)(src + i);
+			i++;
 		}
-		d[0] = s[0];
 	}
 	return (dest);
 }
-
-// ПЕРЕДЕЛАТЬ ТАК:
-
-// В стандартной реализации memmove обычно:
-
-// Если dest < src, копируют вперёд (как memcpy).
-
-// Если dest > src, копируют назад, начиная с конца, чтобы избежать перезаписи.

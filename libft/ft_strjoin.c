@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:12:01 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:12:02 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/04 14:35:55 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/11 12:27:00 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,34 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int		len;
-	char	*res;
+	size_t	s1_len;
+	size_t	s2_len;
+	size_t	i;
+	char	*result;
 
-	if (!s1 || !s2)
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	result = malloc(s1_len + s2_len + 1);
+	if (!result)
 		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	res = (char *)malloc(sizeof(char) * (len + 1));
-	if (!res)
-		return (NULL);
-	res[0] = '\0';
-	ft_strlcat(res, s1, len + 1);
-	ft_strlcat(res, s2, len + 1);
-	return (res);
+	i = 0;
+	while (*s1)
+	{
+		result[i] = *(s1++);
+		i++;
+	}
+	while (*s2)
+	{
+		result[i] = *(s2++);
+		i++;
+	}
+	result[i] = '\0';
+	return (result);
 }
+
+/* #include <stdio.h>
+int	main(void)
+{
+	char *result = ft_strjoin("coucou je ", "deteste brigitte macron");
+	printf("%s\n", result);
+} */

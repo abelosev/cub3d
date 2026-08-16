@@ -3,44 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 18:57:38 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 18:58:00 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/03 21:44:14 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/12 16:36:03 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_isspace(char c)
+int	ft_atoi(const char *src)
 {
-	return (c == ' ' || c == '\t' || c == '\v'
-		|| c == '\r' || c == '\n' || c == '\f');
-}
+	int				result;
+	unsigned int	sign;
 
-int	ft_atoi(const char *s)
-{
-	int	i;
-	int	sign;
-	int	res;
-
-	i = 0;
 	sign = 1;
-	res = 0;
-	if (!s || !(*s))
-		return (0);
-	while (s[i] && ft_isspace(s[i]))
-		i++;
-	if (s[i] == '-' || s[i] == '+')
+	result = 0;
+	while (*src == ' ' || (*src >= 9 && *src <= 13))
+		src++;
+	if (*src == '-' || *src == '+')
 	{
-		if (s[i] == '-')
+		if (*src == '-')
 			sign = -1;
-		i++;
+		src++;
 	}
-	while (s[i] && ft_isdigit(s[i]))
+	while (*src >= '0' && *src <= '9')
 	{
-		res = res * 10 + s[i] - '0';
-		i++;
+		result = result * 10 + *src++ - '0';
 	}
-	return (res * sign);
+	return (result * sign);
 }

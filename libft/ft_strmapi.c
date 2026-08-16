@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:13:28 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:17:37 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/05 10:48:35 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/11 12:27:10 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,32 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	unsigned int	i;
-	size_t			len;
-	char			*res;
+	size_t			s_len;
+	char			*result;
+	unsigned int	index;
 
-	if (!s || !f)
+	s_len = ft_strlen(s);
+	result = malloc(s_len + 1);
+	if (!result)
 		return (NULL);
-	len = ft_strlen(s);
-	res = (char *)malloc(sizeof(char) * (len + 1));
-	if (!res)
-		return (NULL);
-	ft_bzero((void *)res, len + 1);
-	i = 0;
-	while (s[i])
+	index = 0;
+	while (s[index])
 	{
-		res[i] = f(i, s[i]);
-		i++;
+		result[index] = f(index, s[index]);
+		index++;
 	}
-	return (res);
+	result[index] = '\0';
+	return (result);
 }
+
+/* char    shift_by_index(unsigned int x, char c)
+{
+	return (c + x);
+}
+#include <stdio.h>
+
+int	main(int ac, char **av)
+{
+	char    *result = ft_strmapi(av[1], shift_by_index);
+	printf("%s\n", result);
+} */

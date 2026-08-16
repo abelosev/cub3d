@@ -1,82 +1,84 @@
-NAME		= cub3D
+NAME   		:= cub3D
+NAME_BONUS	:= cub3D_bonus
+CFLAGS 		:= -Wall -Wextra -Werror
+CC			:= cc
 
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+### DEPENDENCIES ###
+LIBMLX 		:= ./mlx_linux/libmlx_Linux.a
+LIBFT  		:= ./libft/libft.a
 
-INC_DIR		= inc
-LIBFT_DIR	= libft
-MLX_DIR		= minilibx-linux
+### SOURCES ###
+GNL_SRCS			:= 	src/gnl/get_next_line_utils.c \
+						src/gnl/get_next_line.c
 
-INCLUDES	= -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+MANDATORY_MAIN := src/mandatory/main.c
+BONUS_MAIN := src/bonus/main_bonus.c
 
-HEADERS		= $(INC_DIR)/cub3d.h \
-			  $(INC_DIR)/parsing.h
+MANDATORY_EXCLUSIVE := src/mandatory/init/hooks.c
 
-SRC_GNL		= src/gnl/get_next_line.c \
-			  src/gnl/get_next_line_utils.c
+SHARED_SRCS		:= 		src/mandatory/parsing/get_map.c \
+						src/mandatory/parsing/init_map.c \
+						src/mandatory/parsing/check_map.c \
+						src/mandatory/parsing/parse_config.c \
+						src/mandatory/parsing/parse_color.c \
+						src/mandatory/parsing/parse_texture.c \
+						src/mandatory/parsing/parse_file.c \
+						src/mandatory/parsing/parse_map.c \
+						src/mandatory/parsing/fill_map.c \
+						src/mandatory/parsing/parse_utils.c \
+						src/mandatory/init/init_player.c \
+						src/mandatory/init/init.c \
+						src/mandatory/init/texture_init.c \
+						src/mandatory/display/draw.c \
+						src/mandatory/player/player.c \
+						src/mandatory/player/textures.c \
+						src/mandatory/utils/cleanup_2.c \
+						src/mandatory/utils/cleanup.c \
+						src/mandatory/utils/utils.c \
+						$(GNL_SRCS) \
 
-SRC_PARSING	= src/parsing/check_map.c \
-			  src/parsing/errors.c \
-			  src/parsing/parse_config.c \
-			  src/parsing/parse_file.c \
-			  src/parsing/parse_map.c \
-			  src/parsing/parse_utils.c
+BONUS_SRCS			:=	src/bonus/mouse.c \
+						src/bonus/minimap.c \
+						src/bonus/minimap_utils.c \
+						src/bonus/hooks.c \
 
-SRC_MINI	= src/mini/game_init.c \
-			  src/mini/raycast.c \
-			  src/mini/render.c \
-			  src/mini/draw.c \
-			  src/mini/textures.c \
-			  src/mini/move.c \
-			  src/mini/hooks.c \
-			  src/mini/cleanup.c
+OBJS_MANDATORY 		:= $(MANDATORY_MAIN:.c=.o) $(SHARED_SRCS:.c=.o) $(MANDATORY_EXCLUSIVE:.c=.o)
+OBJS_BONUS 			:= $(BONUS_MAIN:.c=.o) $(SHARED_SRCS:.c=.o) $(BONUS_SRCS:.c=.o)
 
-SRC_MAIN	= src/main.c
+all : $(NAME)
 
-SRCS		= $(SRC_MAIN) \
-			  $(SRC_GNL) \
-			  $(SRC_PARSING) \
-			  $(SRC_MINI)
+%.o: %.c
+	$(CC) -g3 -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
-OBJS		= $(SRCS:.c=.o)
+$(LIBMLX) : ./mlx_linux
+	cd mlx_linux; make;
 
-LIBFT		= $(LIBFT_DIR)/libft.a
-MLX			= $(MLX_DIR)/libmlx_Linux.a
+$(NAME) : $(LIBFT) $(LIBMLX) $(OBJS_MANDATORY)
+	cc $(CFLAGS) $(OBJS_MANDATORY) $(LIBFT) -Lmlx_linux -lmlx_Linux -lm -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g3 -o $(NAME)
 
-LIBS		= -L$(MLX_DIR) \
-			  -lmlx_Linux \
-			  -lXext \
-			  -lX11 \
-			  -lm \
-			  -lbsd
+$(LIBFT) :
+	cd libft; make bonus;
 
-all: $(NAME)
+bonus : $(NAME_BONUS)
 
-$(NAME): $(LIBFT) $(MLX) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME)
+$(NAME_BONUS) : $(LIBFT) $(LIBMLX) $(OBJS_BONUS)
+	cc $(CFLAGS) $(OBJS_BONUS) $(LIBFT) -Lmlx_linux -lmlx_Linux -lm -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g3 -o $(NAME_BONUS)
 
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+clean :
+	cd libft; make clean;
+	rm -f $(OBJS_MANDATORY);
+	rm -f $(OBJS_BONUS);
+	rm -f $(GNL_SRCS:.c=.o);
 
-$(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+fclean : clean
+	rm -f libft/libft.a
+	rm -f $(NAME);
+	rm -f $(NAME_BONUS);
+	rm -rf mlx_linux
 
-$(MLX):
-	$(MAKE) -C $(MLX_DIR)
+mlx_linux :
+	git clone https://github.com/42paris/minilibx-linux.git mlx_linux;
 
-bonus: all
+re : fclean all
 
-clean:
-	rm -f $(OBJS)
-	$(MAKE) -C $(LIBFT_DIR) clean
-	$(MAKE) -C $(MLX_DIR) clean
-
-fclean: clean
-	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
-	rm -f $(MLX_DIR)/libmlx_Linux.a
-	rm -f $(MLX_DIR)/libmlx.a
-
-re: fclean all
-
-.PHONY: all clean fclean re bonus
+.PHONY : clean fclean re bonus

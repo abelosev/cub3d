@@ -3,31 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:14:14 by anbelose          #+#    #+#             */
-/*   Updated: 2025/04/29 19:14:56 by anbelose         ###   ########.fr       */
+/*   Created: 2025/11/03 21:45:01 by vfekete           #+#    #+#             */
+/*   Updated: 2025/11/11 12:23:07 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *h, const char *n, size_t len)
+static int	verify_concordance(const char *hay, const char *nee, size_t l)
 {
-	size_t	i;
-	size_t	k;
-
-	if (!h || !n)
-		return (NULL);
-	i = 0;
-	while (h[i])
+	while (*hay == *nee && l > 0)
 	{
-		k = 0;
-		while (n[k] && i + k < len && h[i + k] == n[k])
-			k++;
-		if (!n[k])
-			return ((char *)h + i);
-		i++;
+		hay++;
+		nee++;
+		if (!(*nee))
+			return (1);
+		l--;
+	}
+	return (0);
+}
+
+char	*ft_strnstr(const char *haystack, const char *needle, size_t length)
+{
+	if (!(*needle))
+		return ((char *)(haystack));
+	while (*haystack && length > 0)
+	{
+		if (*needle == *haystack)
+		{
+			if (verify_concordance(haystack, needle, length))
+				return ((char *)haystack);
+			if (length == 0 || !(*haystack))
+				return (NULL);
+		}
+		length--;
+		haystack++;
 	}
 	return (NULL);
 }
+
+/* int main()
+{
+	char *haystack = "bobonbonjour";
+	char *needle = "bonjour";
+	char *res = ft_strnstr(haystack, needle, 12);
+	if (!res)
+	{
+		printf("strnstr returned NULL\n");
+	}
+	else
+		printf("%s\n", res);
+} */
