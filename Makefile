@@ -48,13 +48,13 @@ OBJS_BONUS 			:= $(BONUS_MAIN:.c=.o) $(SHARED_SRCS:.c=.o) $(BONUS_SRCS:.c=.o)
 all : $(NAME)
 
 %.o: %.c
-	$(CC) -g3 -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3 -c $< -o $@
+	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -c $< -o $@
 
 $(LIBMLX) : ./mlx_linux
 	cd mlx_linux; make;
 
 $(NAME) : $(LIBFT) $(LIBMLX) $(OBJS_MANDATORY)
-	cc $(CFLAGS) $(OBJS_MANDATORY) $(LIBFT) -Lmlx_linux -lmlx_Linux -lm -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g3 -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS_MANDATORY) $(LIBFT) -Lmlx_linux -lmlx_Linux -lXext -lX11 -lm -o $(NAME)
 
 $(LIBFT) :
 	cd libft; make bonus;
@@ -62,18 +62,17 @@ $(LIBFT) :
 bonus : $(NAME_BONUS)
 
 $(NAME_BONUS) : $(LIBFT) $(LIBMLX) $(OBJS_BONUS)
-	cc $(CFLAGS) $(OBJS_BONUS) $(LIBFT) -Lmlx_linux -lmlx_Linux -lm -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g3 -o $(NAME_BONUS)
+	$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT) -Lmlx_linux -lmlx_Linux -lXext -lX11 -lm -o $(NAME_BONUS)
 
 clean :
 	cd libft; make clean;
-	rm -f $(OBJS_MANDATORY);
-	rm -f $(OBJS_BONUS);
-	rm -f $(GNL_SRCS:.c=.o);
+	rm -f $(OBJS_MANDATORY)
+	rm -f $(OBJS_BONUS)
 
 fclean : clean
 	rm -f libft/libft.a
-	rm -f $(NAME);
-	rm -f $(NAME_BONUS);
+	rm -f $(NAME)
+	rm -f $(NAME_BONUS)
 	rm -rf mlx_linux
 
 mlx_linux :
@@ -81,4 +80,4 @@ mlx_linux :
 
 re : fclean all
 
-.PHONY : clean fclean re bonus
+.PHONY : all clean fclean re bonus
