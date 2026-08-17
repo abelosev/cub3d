@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by vfekete, zaddi*
+*This project has been created as part of the 42 curriculum by vfekete, anbelose*
 
 # cub3d
 
