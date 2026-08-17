@@ -77,7 +77,7 @@ typedef struct s_map
 	int				ceiling_color[3];
 	bool			floor_found;
 	bool			ceiling_found;
-	unsigned int	parse_error;
+	t_parse_errors	parse_error;
 	t_point			position;
 	t_point			direction;
 	t_point			plane;
