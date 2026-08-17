@@ -23,13 +23,6 @@ int	count_lines(char **lines)
 	return (i);
 }
 
-int	find_map_end(char **lines, int start, int total)
-{
-	while (total > start && is_blank_line(lines[total - 1]))
-		total--;
-	return (total);
-}
-
 int	find_map_start(t_map *map, char **lines)
 {
 	int	i;
@@ -59,11 +52,9 @@ int	find_map_start(t_map *map, char **lines)
 	return (i);
 }
 
-void	parse_map(char *map_path, t_map *map)
+char	**load_map_lines(char *map_path, t_map *map)
 {
 	int		fd;
-	int		map_start;
-	int		total;
 	t_list	*lst;
 	char	**lines;
 
@@ -71,20 +62,31 @@ void	parse_map(char *map_path, t_map *map)
 	if (fd == -1)
 	{
 		map->parse_error = OPEN_FAIL;
-		return ;
+		return (NULL);
 	}
 	lst = read_lines(fd, map);
 	close(fd);
 	if (map->parse_error != NO_ERROR)
-		return ;
+		return (NULL);
 	lines = list_to_array(lst, map);
+	return (lines);
+}
+
+void	parse_map(char *map_path, t_map *map)
+{
+	int		map_start;
+	int		total;
+	char	**lines;
+
+	lines = load_map_lines(map_path, map);
 	if (!lines)
 		return ;
 	total = count_lines(lines);
 	map_start = find_map_start(map, lines);
 	if (map_start >= 0)
 	{
-		total = find_map_end(lines, map_start, total);
+		while (total > map_start && is_blank_line(lines[total - 1]))
+			total--;
 		build_map(map, lines, map_start, total);
 	}
 	free_lines(lines);
