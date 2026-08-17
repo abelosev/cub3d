@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
-#include "../includes/parsing.h"
+#include "cub3d.h"
+#include "parsing.h"
 
 void	error(t_parse_errors error_code)
 {

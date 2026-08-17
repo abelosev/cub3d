@@ -1,4 +1,4 @@
-#include "../../../includes/parsing.h"
+#include "parsing.h"
 
 t_texture	*get_texture(t_map *map, char *id)
 {

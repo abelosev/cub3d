@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d_bonus.h"
+#include "cub3d_bonus.h"
 
 void	mouse_hook(int x, int y, t_cub3d_env *env)
 {

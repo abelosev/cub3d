@@ -1,4 +1,4 @@
-#include "../../../includes/parsing.h"
+#include "parsing.h"
 
 void	init_empty_texts(t_map	*map)
 {

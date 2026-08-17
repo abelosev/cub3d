@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d_bonus.h"
+#include "cub3d_bonus.h"
 
 bool	is_out_of_bounds(t_cub3d_env *env, int x, int y)
 {

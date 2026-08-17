@@ -48,7 +48,7 @@ OBJS_BONUS 			:= $(BONUS_MAIN:.c=.o) $(SHARED_SRCS:.c=.o) $(BONUS_SRCS:.c=.o)
 all : $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I/usr/include -Imlx_linux -c $< -o $@
+	$(CC) $(CFLAGS) -Iincludes -Imlx_linux -c $< -o $@
 
 $(LIBMLX) : ./mlx_linux
 	cd mlx_linux; make;
@@ -76,7 +76,7 @@ fclean : clean
 	rm -rf mlx_linux
 
 mlx_linux :
-	git clone https://github.com/42paris/minilibx-linux.git mlx_linux;
+	git clone https://github.com/42paris/minilibx-linux.git mlx_linux
 
 re : fclean all
 

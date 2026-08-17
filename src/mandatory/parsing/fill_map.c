@@ -1,4 +1,4 @@
-#include "../../../includes/parsing.h"
+#include "parsing.h"
 
 int	allocate_map(t_map *map, int height)
 {

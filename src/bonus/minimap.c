@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d_bonus.h"
+#include "cub3d_bonus.h"
 
 #define MINIMAP_OFF 100
 #define CELL_LEN 20

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d_bonus.h"
+#include "cub3d_bonus.h"
 
 /* Comment out mouse_hide to disable leaks */
 void	set_hooks(t_cub3d_env *env)

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d_bonus.h"
+#include "cub3d_bonus.h"
 
 static void	handle_rotation(int k, t_cub3d_env *env)
 {

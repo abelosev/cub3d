@@ -1,4 +1,4 @@
-#include "../../../includes/parsing.h"
+#include "parsing.h"
 
 int	get_cell(t_map *map, int y, int x)
 {

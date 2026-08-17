@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes/parsing.h"
+#include "parsing.h"
 #include <stdio.h>
 
 int	count_lines(char **lines)
