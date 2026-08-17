@@ -40,7 +40,7 @@ int	validate_map_lines(t_map *map, char **lines,
 	y = 0;
 	while (y < height)
 	{
-		if (!lines[start + y][0])
+		if (is_blank_line(lines[start + y]))
 			return (map->parse_error = MAP_SPLIT, 0);
 		if (!validate_line(map, lines[start + y], &player_count))
 			return (0);
@@ -67,5 +67,6 @@ void	build_map(t_map *map, char **lines, int start, int total)
 		return ;
 	if (!allocate_map(map, height))
 		return ;
-	fill_map(map, lines, start, height);
+	if (!fill_map(map, lines, start, height))
+		return ;
 }

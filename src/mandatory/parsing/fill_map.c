@@ -7,6 +7,11 @@ int	allocate_map(t_map *map, int height)
 	map->cells = ft_calloc(height + 1, sizeof(int *));
 	if (!map->widths || !map->cells)
 	{
+		free(map->widths);
+		free(map->cells);
+		map->widths = NULL;
+		map->cells = NULL;
+		map->height = 0;
 		map->parse_error = MALLOC_ERROR;
 		return (0);
 	}
@@ -48,6 +53,19 @@ int	fill_line(t_map *map, char *line, int y)
 	return (1);
 }
 
+void	free_part_map(t_map *map, int height)
+{
+	int	y;
+
+	y = 0;
+	while (y < height)
+	{
+		free(map->cells[y]);
+		map->cells[y] = NULL;
+		y++;
+	}
+}
+
 int	fill_map(t_map *map, char **lines, int start, int height)
 {
 	int	y;
@@ -56,8 +74,10 @@ int	fill_map(t_map *map, char **lines, int start, int height)
 	while (y < height)
 	{
 		if (!fill_line(map, lines[start + y], y))
-		// free + error malloc
+		{
+			free_part_map(map, y);
 			return (0);
+		}
 		y++;
 	}
 	return (1);

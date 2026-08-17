@@ -23,6 +23,13 @@ int	count_lines(char **lines)
 	return (i);
 }
 
+int	find_map_end(char **lines, int start, int total)
+{
+	while (total > start && is_blank_line(lines[total - 1]))
+		total--;
+	return (total);
+}
+
 int	find_map_start(t_map *map, char **lines)
 {
 	int	i;
@@ -76,7 +83,10 @@ void	parse_map(char *map_path, t_map *map)
 	total = count_lines(lines);
 	map_start = find_map_start(map, lines);
 	if (map_start >= 0)
+	{
+		total = find_map_end(lines, map_start, total);
 		build_map(map, lines, map_start, total);
+	}
 	free_lines(lines);
 }
 
