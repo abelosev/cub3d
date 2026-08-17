@@ -49,6 +49,12 @@
 # define INVALID_WHITESPACE_ERR "Invalid whitespace found in map\n"
 # define MALLOC_ERROR_MSG "Malloc error\n"
 
+typedef struct s_point_int
+{
+	int				x;
+	int				y;
+}					t_point_int;
+
 typedef struct s_line_draw
 {
 	int				dx;

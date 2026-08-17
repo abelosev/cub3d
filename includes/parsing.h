@@ -36,11 +36,18 @@ typedef struct s_point
 	double			y;
 }					t_point;
 
-typedef struct s_point_int
+typedef struct s_texture
 {
-	int				x;
-	int				y;
-}					t_point_int;
+	void			*img_ptr;
+	char			*data;
+	int				width;
+	int				height;
+	int				bpp;
+	int				line_len;
+	int				endian;
+	char			*tex_path;
+	bool			tex_loaded;
+}					t_texture;
 
 typedef struct s_lode_raycast
 {
@@ -57,19 +64,6 @@ typedef struct s_lode_raycast
 	double			wall_x;
 	int				d;
 }					t_lode_raycast;
-
-typedef struct s_texture
-{
-	void			*img_ptr;
-	char			*data;
-	int				width;
-	int				height;
-	int				bpp;
-	int				line_len;
-	int				endian;
-	char			*tex_path;
-	bool			tex_loaded;
-}					t_texture;
 
 typedef struct s_map
 {
