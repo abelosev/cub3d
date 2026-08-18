@@ -61,7 +61,7 @@ void	clean_mlx_env(t_cub3d_env *env)
 {
 	if (env->mlx && env->img.img)
 		mlx_destroy_image(env->mlx, env->img.img);
-	if (env->mlx_win)
+	if (env->mlx && env->mlx_win) // just in case
 		mlx_destroy_window(env->mlx, env->mlx_win);
 	if (env->mlx)
 	{
