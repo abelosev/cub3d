@@ -88,9 +88,7 @@ t_map				*get_map(char *map_filepath);
 /* UTILS */
 
 char				*gnl_no_nl(int fd);
-char				*gnl_no_nl_no_ws(int fd);
 void				ft_free_split(char **split);
-int					skip_whitespaces_tabs(char *str);
 t_point				add_points(t_point p1, t_point p2);
 t_point				rotate_point(t_point p, float angleDeg);
 
