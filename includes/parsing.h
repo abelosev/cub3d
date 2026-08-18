@@ -8,6 +8,22 @@
 
 /* PARSING ERRORS */
 
+# define NO_PLAYER_ERR "Map does not have a player\n"
+# define DOUBLE_PLAYER_ERR "Map has two or more players\n"
+# define INVALID_CHAR_ERR "Map contains forbidden character\n"
+# define INVALID_TEXTURES_ERR "Couldn't load one or more of map textures\n"
+# define DOUBLE_TEXTURES_ERR "One or more textures are defined twice\n"
+# define MAP_SPLIT_ERR "Map is split by a newline\n"
+# define WRONG_RGB_ERR "RGB values for floor or ceiling is invalid\n"
+# define DOUBLE_RGB_ERR "RGB values for floor or ceiling is defined twice\n"
+# define MISSING_ASSETS_ERR "Map is missing some assets\n"
+# define UNEXPECTED_ASSETS_ERR "Map contains some unknown asset\n"
+# define OPEN_FAIL_ERR "Failed to open map file\n"
+# define TEXTURE_LOAD_FAIL_ERR "Failed to load one or more textures\n"
+# define MAP_NOT_CLOSE_ERR "Map is not enclosed by walls\n"
+# define INVALID_WHITESPACE_ERR "Invalid whitespace found in map\n"
+# define MALLOC_ERROR_MSG "Malloc error\n"
+
 typedef enum e_parse_errors
 {
 	NO_ERROR,
