@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anbelose <anbelose@learner.42.tech>        +#+  +:+       +#+        */
+/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/17 00:45:48 by anbelose          #+#    #+#             */
-/*   Updated: 2026/08/17 00:46:10 by anbelose         ###   ########.fr       */
+/*   Created: 2026/07/03 13:20:42 by burei             #+#    #+#             */
+/*   Updated: 2026/08/07 16:47:42 by vfekete          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,6 @@ static void	set_movements_deltas(int k, double *dx,
 	}
 }
 
-// static void	handle_movement(int k, t_cub3d_env *env)
-// {
-// 	double	dx;
-// 	double	dy;
-
-// 	dx = 0;
-// 	dy = 0;
-// 	set_movements_deltas(k, &dx, &dy, env);
-// 	if (env->map->position.y + dy > 0.25
-// 		&& env->map->position.y + dy < env->map->height - 0.25)
-// 	{
-// 		if (env->map->position.x + dx > 0.25 && env->map->position.x
-// 			+ dx < env->map->widths[(int)(env->map->position.y + dy)] - 0.25)
-// 		{
-// 			env->map->position.y += dy;
-// 			env->map->position.x += dx;
-// 		}
-// 	}
-// }
-
 static void	handle_movement(int k, t_cub3d_env *env)
 {
 	double	dx;
@@ -108,3 +88,23 @@ int	key_hook(int k, t_cub3d_env *env)
 	mlx_put_image_to_window(env->mlx, env->mlx_win, env->img.img, 0, 0);
 	return (0);
 }
+
+// static void	handle_movement(int k, t_cub3d_env *env)
+// {
+// 	double	dx;
+// 	double	dy;
+
+// 	dx = 0;
+// 	dy = 0;
+// 	set_movements_deltas(k, &dx, &dy, env);
+// 	if (env->map->position.y + dy > 0.25
+// 		&& env->map->position.y + dy < env->map->height - 0.25)
+// 	{
+// 		if (env->map->position.x + dx > 0.25 && env->map->position.x
+// 			+ dx < env->map->widths[(int)(env->map->position.y + dy)] - 0.25)
+// 		{
+// 			env->map->position.y += dy;
+// 			env->map->position.x += dx;
+// 		}
+// 	}
+// }

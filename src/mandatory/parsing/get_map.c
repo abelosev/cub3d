@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_map.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfekete <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: anbelose <anbelose@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/03 13:27:09 by burei             #+#    #+#             */
-/*   Updated: 2026/08/16                              ###   ########.fr       */
+/*   Created: 2026/08/18 14:19:33 by anbelose          #+#    #+#             */
+/*   Updated: 2026/08/18 14:19:40 by anbelose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
-#include <stdio.h>
 
 int	count_lines(char **lines)
 {

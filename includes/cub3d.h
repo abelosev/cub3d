@@ -67,44 +67,44 @@ typedef struct s_cub3d_env
 	t_data			img;
 }					t_cub3d_env;
 
-/* INIT */
+// init
 
 int					init_cub3d_env(char *map_path, t_cub3d_env *env);
 int					init_img(t_cub3d_env *env);
 void				init_player(int y, int x, char direction, t_map *map);
 bool				load_textures(t_cub3d_env *e);
 
-/* DRAWING TO SCREEN */
+// drawning
 
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void				draw_line(t_data *img, t_point p1, t_point p2, int rgba[4]);
 int					rgba_to_int(unsigned char r, unsigned char g,
 						unsigned char b, unsigned char a);
 
-/* MAP */
+// map
 
 t_map				*get_map(char *map_filepath);
 
-/* UTILS */
+// utils
 
 char				*gnl_no_nl(int fd);
 void				ft_free_split(char **split);
 t_point				add_points(t_point p1, t_point p2);
 t_point				rotate_point(t_point p, float angleDeg);
 
-/* CLEANUP */
+// cleanup
 
 void				clean_map_struct(t_cub3d_env *env);
 void				clean_cub3d_env(t_cub3d_env *env);
 void				clean_mlx_env(t_cub3d_env *env);
 
-/* RAY GEOMETRY */
+// raycast
 
 void				raycast(t_cub3d_env *env);
 void				draw_vertical_strip(int x, t_cub3d_env *e);
 void				get_wall_data(t_map *map, t_point *sides, double *distance);
 
-/* HOOKS */
+// hooks
 
 void				set_hooks(t_cub3d_env *env);
 int					key_hook(int keycode, t_cub3d_env *env);

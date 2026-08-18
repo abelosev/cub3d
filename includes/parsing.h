@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anbelose <anbelose@learner.42.tech>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/18 14:13:31 by anbelose          #+#    #+#             */
+/*   Updated: 2026/08/18 14:13:33 by anbelose         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -5,8 +17,9 @@
 # include "../src/gnl/get_next_line.h"
 # include <stdbool.h>
 # include <stddef.h>
+# include <stdio.h>
 
-/* PARSING ERRORS */
+// pars errors
 
 # define NO_PLAYER_ERR "Map does not have a player\n"
 # define DOUBLE_PLAYER_ERR "Map has two or more players\n"
@@ -43,8 +56,6 @@ typedef enum e_parse_errors
 	INVALID_WHITESPACE,
 	MALLOC_ERROR
 }	t_parse_errors;
-
-/* SHARED MAP STRUCTURES */
 
 typedef struct s_point
 {
@@ -102,18 +113,18 @@ typedef struct s_map
 	t_texture		*curr_tex;
 }					t_map;
 
-/* GET MAP */
+// get map
 
 void				init_empty_map(t_map *map);
 t_map				*get_map(char *map_path);
 
-/* PARSE FILE */
+// parse file
 
 t_list				*read_lines(int fd, t_map *map);
 char				**list_to_array(t_list *lst, t_map *map);
 void				free_lines(char **lines);
 
-/* PARSE CONFIG */
+// parse config
 
 void				parse_color(t_map *map, int *color, bool *found,
 						char *rest);
@@ -121,18 +132,15 @@ void				set_texture(t_map *map, char *id, char *rest);
 int					try_parse_config(t_map *map, char *line);
 void				check_config(t_map *map);
 
-/* PARSE MAP */
+// parse map
 
 void				build_map(t_map *map, char **lines, int start, int total);
 int					get_cell(t_map *map, int y, int x);
 int					allocate_map(t_map *map, int height);
 int					fill_map(t_map *map, char **lines, int start, int height);
-
-/* MAP VALIDATION */
-
 void				validate_closed(t_map *map);
 
-/* PARSE UTILS */
+// utils
 
 int					is_space(char c);
 char				*skip_spaces(char *s);
@@ -140,7 +148,7 @@ int					parse_int(char *s, int *out);
 int					is_blank_line(char *line);
 void				strip_newline(char *line);
 
-/* PARSER DEPENDENCIES */
+// dependencies
 
 void				init_player(int y, int x, char direction, t_map *map);
 void				ft_free_split(char **split);
